@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-
 import 'package:flutter/material.dart';
 
 import 'const.dart';
@@ -12,11 +10,11 @@ Widget? defaultMentionEmbedBuilder<T>(
   EmbedNode node, {
   Function(MentionData<T>)? onTap,
   Function(MentionData<T>)? onHover,
-  required T Function(Map<String, dynamic>) fromJsonT,
+  required T Function(Map<String, dynamic>) fromJson,
 }) {
   if (node.value.type == mentionEmbedKey && node.value.inline) {
     try {
-      final data = MentionData<T>.fromJson(node.value.data, fromJsonT);
+      final data = MentionData<T>.fromJson(node.value.data, fromJson);
       return Material(
         color: Colors.transparent,
         child: MouseRegion(

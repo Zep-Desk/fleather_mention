@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   final mentionWidget = defaultMentionEmbedBuilder(
                     context,
                     node,
-                    fromJsonT: (json) => json['value'] as String,
+                    fromJson: (json) => json['value'] as String,
                     onTap: (data) => ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(data.value))),
                     onHover: (data) => print(data.value),
