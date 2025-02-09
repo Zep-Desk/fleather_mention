@@ -1,9 +1,9 @@
-import 'package:fleather/fleather.dart';
-import 'package:fleather_mention/src/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'const.dart';
+
+import 'package:fleather/fleather.dart';
+import 'package:fleather_mention/src/utils.dart';
 
 Widget? defaultMentionEmbedBuilder(
   BuildContext context,
