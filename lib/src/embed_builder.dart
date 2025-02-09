@@ -25,25 +25,19 @@ Widget? defaultMentionEmbedBuilder<T>(
       final textStyle = defaultStyle.copyWith(
         color: color ?? Theme.of(context).colorScheme.primary,
         fontSize: fontSize ?? defaultStyle.fontSize,
-        decoration: TextDecoration.underline,
+        decoration: TextDecoration.none,
       );
 
       return Material(
         color: Colors.transparent,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
-          child: InkWell(
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            overlayColor: WidgetStateProperty.all(Colors.transparent),
-            enableFeedback: false,
+          onEnter: (_) {
+            onHover?.call(data);
+          },
+          child: GestureDetector(
             onTap: () {
               onTap?.call(data);
-            },
-            highlightColor: Colors.transparent,
-            onHover: (hover) {
-              onHover?.call(data);
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(
