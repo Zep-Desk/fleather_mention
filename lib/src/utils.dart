@@ -17,20 +17,23 @@ class MentionData<T> {
   final String value;
   final String trigger;
   final T? associated;
+  final Map<String, dynamic> style;
 
   const MentionData({
     required this.value,
     required this.trigger,
     this.associated,
+    this.style = const {},
   });
 
   Map<String, dynamic> toJson(Map<String, dynamic> Function(T) toJsonT) {
     final map = <String, dynamic>{
       'value': value,
       'trigger': trigger,
+      'style': style,
     };
     if (associated != null) {
-      map['associated'] = toJsonT(associated as T);
+      map['associated'] = toJsonT(associated!);
     }
     return map;
   }
@@ -42,6 +45,7 @@ class MentionData<T> {
     return MentionData<T>(
       value: json['value'] as String,
       trigger: json['trigger'] as String,
+      style: json['style'] as Map<String, dynamic>? ?? {},
       associated: json.containsKey('associated')
           ? fromJsonT(json['associated'] as Map<String, dynamic>)
           : null,
