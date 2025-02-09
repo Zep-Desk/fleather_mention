@@ -3,22 +3,52 @@ import 'package:flutter/material.dart';
 
 import 'const.dart';
 
-EmbeddableObject buildEmbeddableObject(MentionData data) =>
-    EmbeddableObject(mentionEmbedKey, inline: true, data: data.toJson());
+EmbeddableObject buildEmbeddableObject<T>(
+    MentionData<T> data,
+    Map<String, dynamic> Function(T) toJsonT,
+    ) =>
+    EmbeddableObject(
+      mentionEmbedKey,
+      inline: true,
+      data: data.toJson(toJsonT),
+    );
 
-class MentionData {
-  final String value, trigger;
-  final Map<String, dynamic> payload;
+class MentionData<T> {
+  final String value;
+  final String trigger;
+  final T? associated;
 
-  const MentionData(
-      {required this.value, required this.trigger, this.payload = const {}});
+  const MentionData({
+    required this.value,
+    required this.trigger,
+    this.associated,
+  });
 
-  factory MentionData.fromJson(Map<String, dynamic> map) =>
-      MentionData(value: map['value'], trigger: map['trigger'], payload: map);
+  Map<String, dynamic> toJson(Map<String, dynamic> Function(T) toJsonT) {
+    final map = <String, dynamic>{
+      'value': value,
+      'trigger': trigger,
+    };
+    if (associated != null) {
+      map['associated'] = toJsonT(associated!);
+    }
+    return map;
+  }
 
-  Map<String, dynamic> toJson() =>
-      {...payload, 'value': value, 'trigger': trigger};
+  factory MentionData.fromJson(
+      Map<String, dynamic> json,
+      T Function(Map<String, dynamic>) fromJsonT,
+      ) {
+    return MentionData<T>(
+      value: json['value'] as String,
+      trigger: json['trigger'] as String,
+      associated: json.containsKey('associated')
+          ? fromJsonT(json['associated'] as Map<String, dynamic>)
+          : null,
+    );
+  }
 }
+
 
 class MentionCallbackAction<T extends Intent> extends CallbackAction<T> {
   MentionCallbackAction({required super.onInvoke, this.enabled = true});
