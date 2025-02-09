@@ -30,7 +30,7 @@ class MentionData<T> {
       'trigger': trigger,
     };
     if (associated != null) {
-      map['associated'] = toJsonT(associated!);
+      map['associated'] = toJsonT(associated as T);
     }
     return map;
   }

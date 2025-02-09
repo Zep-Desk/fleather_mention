@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     fromJsonT: (json) => json['value'] as String,
                     onTap: (data) => ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(data.value))),
+                    onHover: (data) => print(data.value),
                   );
                   if (mentionWidget != null) {
                     return mentionWidget;
