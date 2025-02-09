@@ -259,6 +259,17 @@ class _FleatherMentionState extends State<FleatherMention> {
     }
   }
 
+  Map<String, dynamic> defaultToJson(dynamic assoc) {
+    if (assoc == null) return {};
+    if (assoc is Map<String, dynamic>) return assoc;
+    if (assoc.toJson is Function) {
+      return assoc.toJson();
+    }
+    throw Exception(
+      'The associated object must have a `toJson` method or be a Map<String, dynamic>',
+    );
+  }
+
   void _onSelected(MentionData data) {
     final controller = widget.controller;
     final mentionStartIndex = controller.selection.end - _lastQuery!.length - 1;
@@ -266,7 +277,7 @@ class _FleatherMentionState extends State<FleatherMention> {
     controller.replaceText(
       mentionStartIndex,
       mentionedTextLength,
-      buildEmbeddableObject(data),
+      buildEmbeddableObject(data, defaultToJson),
       selection: TextSelection.collapsed(offset: mentionStartIndex + 1),
     );
     controller.replaceText(
