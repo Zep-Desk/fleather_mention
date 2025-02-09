@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
 
-import 'const.dart';
-
 import 'package:fleather/fleather.dart';
-import 'package:fleather_mention/src/utils.dart';
+import 'package:fleather_mention/fleather_mention.dart';
 
-Widget? defaultMentionEmbedBuilder<T>(
-  BuildContext context,
-  EmbedNode node, {
+Widget? defaultMentionEmbedBuilder<T>({
+  required BuildContext context,
+  required EmbedNode node,
+  required T Function(Map<String, dynamic>) fromJson,
+  TextStyle? editorTextStyle,
   Function(MentionData<T>)? onTap,
   Function(MentionData<T>)? onHover,
-  required T Function(Map<String, dynamic>) fromJson,
 }) {
   if (node.value.type == mentionEmbedKey && node.value.inline) {
     try {
       final data = MentionData<T>.fromJson(node.value.data, fromJson);
-      final double? fontSize = data.style['fontSize'] is num
-          ? (data.style['fontSize'] as num).toDouble()
-          : null;
       final Color? color =
           data.style['color'] is int ? Color(data.style['color'] as int) : null;
 
-      final defaultStyle = DefaultTextStyle.of(context).style;
-      final textStyle = defaultStyle.copyWith(
+      final baseStyle = editorTextStyle ?? DefaultTextStyle.of(context).style;
+
+      final textStyle = baseStyle.copyWith(
         color: color ?? Theme.of(context).colorScheme.primary,
-        fontSize: fontSize ?? defaultStyle.fontSize,
         decoration: TextDecoration.none,
       );
 
@@ -32,18 +28,11 @@ Widget? defaultMentionEmbedBuilder<T>(
         color: Colors.transparent,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
-          onEnter: (_) {
-            onHover?.call(data);
-          },
+          onEnter: (_) => onHover?.call(data),
           child: GestureDetector(
-            onTap: () {
-              onTap?.call(data);
-            },
+            onTap: () => onTap?.call(data),
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 4,
-                vertical: 2,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               child: Text('${data.trigger}${data.value}', style: textStyle),
             ),
           ),
