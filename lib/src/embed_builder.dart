@@ -19,13 +19,12 @@ Widget? defaultMentionEmbedBuilder<T>(
         color: Colors.transparent,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
-          child: InkWell(
+          onHover: (event) {
+            onHover?.call(data);
+          },
+          child: GestureDetector(
             onTap: () {
               onTap?.call(data);
-            },
-            highlightColor: Colors.transparent,
-            onHover: (hover) {
-              onHover?.call(data);
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -34,7 +33,7 @@ Widget? defaultMentionEmbedBuilder<T>(
               ),
               child: Text(
                 '${data.trigger}${data.value}',
-                style: TextStyle(
+                style: DefaultTextStyle.of(context).style.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
