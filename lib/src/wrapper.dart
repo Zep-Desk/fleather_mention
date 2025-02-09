@@ -9,8 +9,9 @@ import 'package:flutter/services.dart';
 
 import 'utils.dart';
 
-typedef MentionOptionsBuilder = FutureOr<Iterable<MentionData>> Function(
+typedef MentionOptionsBuilder<T> = FutureOr<Iterable<MentionData<T>>> Function(
     String trigger, String query);
+
 
 typedef MentionOnSelected = void Function(MentionData option);
 
